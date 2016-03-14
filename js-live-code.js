@@ -37,7 +37,7 @@ define(function(require, exports, module) {
     function handleLiveDebugger(){
         document = DocumentManager.getCurrentDocument();
         //        if(panel.isVisible() && document && document.getLanguage()._name == "JavaScript") {
-        if(document && document.getLanguage()._name == "JavaScript") {
+        if(panel.isVisible() && document && document.getLanguage()._name == "JavaScript") {
 
             var text = document.getText().replace(/.*console.log+\([^\)]*\)(\.[^\)]*\))?.*/g,"");
 
@@ -60,6 +60,8 @@ define(function(require, exports, module) {
 
 //                );
                 
+//                TODO: UNCOMMENT
+
                 nodeDebuggerDomain
                     .exec("writeFile", docArray.join("\n"), document.file._parentPath)
                     .done(function(result){
@@ -67,14 +69,14 @@ define(function(require, exports, module) {
                     
 
                     
+console.log(console)
                          nodeDebuggerDomain
                             .exec("runScript", document.file._parentPath)
                             .done(function(data){
 
                              
 //                             $(".helloworld-panel").find("#insertionPos").innerHTML = '';
-                             
-console.log(helloworld)
+
                              $(".helloworld-panel").find("#insertionPos").html("<p>"+data.stdout+"</p");
                              
                          });
@@ -107,7 +109,7 @@ console.log(helloworld)
         CommandManager.register("JS Live Debugger", HELLOWORLD_EXECUTE, handleHelloWorld);
 
         var menu = Menus.getMenu(Menus.AppMenuBar.VIEW_MENU);
-        menu.addMenuItem(HELLOWORLD_EXECUTE);
+        menu.addMenuItem(HELLOWORLD_EXECUTE, "Shift-Cmd-J");
 
         panel = WorkspaceManager.createBottomPanel(HELLOWORLD_EXECUTE, panelHtml, 200);
 

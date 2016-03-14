@@ -63,32 +63,32 @@ define(function(require, exports, module) {
                 
 //                TODO: UNCOMMENT
                 
-//                nodeDebuggerDomain
-//                    .exec("writeFile", docArray.join("\n"), document.file._parentPath)
-//                    .done(function(result){
-////                        console.log("[brackets-simple-node] writeFile output",result);
-//                    
-//                        console.log("Executing runSCript");
-//                    
-//                         nodeDebuggerDomain
-//                            .exec("runScript", document.file._parentPath)
-//                            .done(function(data){
-//                             console.log(data.stdout);
+                nodeDebuggerDomain
+                    .exec("writeFile", docArray.join("\n"), document.file._parentPath)
+                    .done(function(result){
+//                        console.log("[brackets-simple-node] writeFile output",result);
+
+                        console.log("Executing runScript");
+
+                         nodeDebuggerDomain
+                            .exec("runScript", document.file._parentPath)
+                            .done(function(data){
+                             console.log(data.stdout);
+
+//                             $(".helloworld-panel").find("#insertionPos").innerHTML = '';
+
+                             $(".helloworld-panel").find("#insertionPos").html("<p>"+data.stdout+"</p");
+
+                         });
+//                            .done(function(scriptResult){
 //                             
-////                             $(".helloworld-panel").find("#insertionPos").innerHTML = '';
-//                             
-//                             $(".helloworld-panel").find("#insertionPos").html("<p>"+data.stdout+"</p");
-//                             
-//                         });
-////                            .done(function(scriptResult){
-////                             
-////                                console.log("[brackets-simple-node] runScript output", scriptResult);    
-////                            });
-//                    
-//                    })
-//                    .fail(function (err) {
-//                        console.error("[brackets-simple-node] failed to run nodeDebugger.writeFile", err);
-//                    });
+//                                console.log("[brackets-simple-node] runScript output", scriptResult);
+//                            });
+
+                    })
+                    .fail(function (err) {
+                        console.error("[brackets-simple-node] failed to run nodeDebugger.writeFile", err);
+                    });
 
 
                 //                .join("\n");

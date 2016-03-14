@@ -1,5 +1,6 @@
 var os = require('os');
 var fs = require('fs');
+console.log(var)
 var execSync = require('sync-exec');
 
 function cmdSaveToFile(content, path){
@@ -12,9 +13,6 @@ function cmdSaveToFile(content, path){
 }
 
 
-
-cmdRunScript("test");
-
 function cmdRunScript(path) {
     
 //    return "done";
@@ -22,7 +20,6 @@ function cmdRunScript(path) {
     var scriptPath = "js-live-code.js";
     // keep track of whether callback has been invoked to prevent multiple invocations
     var invoked = false;
-console.log(invoked)
     
     var returndata;
 

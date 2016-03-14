@@ -12,9 +12,6 @@ function cmdSaveToFile(content, path){
 }
 
 
-
-cmdRunScript("test");
-
 function cmdRunScript(path) {
     
 //    return "done";
