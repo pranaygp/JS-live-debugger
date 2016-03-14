@@ -1,0 +1,12 @@
+.helloworld-panel{
+    padding: 10px;
+}
+
+.helloworld-panel h1 {
+        color: white;
+}
+ 
+.helloworld-panel p {
+        color: white;
+        font-weight: bold;
+}
