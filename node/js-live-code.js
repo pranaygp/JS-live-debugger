@@ -1,6 +1,5 @@
 var os = require('os');
 var fs = require('fs');
-console.log(var)
 var execSync = require('sync-exec');
 
 function cmdSaveToFile(content, path){
@@ -37,6 +36,9 @@ function cmdRunScript(path) {
 //    /usr/local/bin/node
     
     var process = execSync("/usr/local/bin/node " + path.replace(/ /,"\\ ") + scriptPath);
+    
+
+console.log(console)
     
     return process;
     

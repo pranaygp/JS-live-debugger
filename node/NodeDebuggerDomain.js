@@ -37,6 +37,8 @@ function cmdRunScript(path) {
     
     var process = execSync("/usr/local/bin/node " + path.replace(/ /,"\\ ") + scriptPath);
     
+    console.log(process);
+    
     return process;
     
 //    var process = childProcess.exec("which node", function(error, stdout, stderr){

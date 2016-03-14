@@ -45,7 +45,7 @@ define(function(require, exports, module) {
             var lineNumber = editor.getCursorPos().line;
             var currentLine = document.getLine(lineNumber);
 
-            var variables = currentLine.replace(/( var | function | class | return )/, "").match(/\b[A-Za-z]\w*\b(?!\s*\()/g);
+            var variables = currentLine.replace(/(var| var | function | class | return )/, "").match(/\b[A-Za-z]\w*\b(?!\s*\()/g);
 
 
 

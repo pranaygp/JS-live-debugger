@@ -45,7 +45,8 @@ define(function(require, exports, module) {
             var lineNumber = editor.getCursorPos().line;
             var currentLine = document.getLine(lineNumber);
 
-            var variables = currentLine.replace(/( var | function | class | return )/, "").match(/\b[A-Za-z]\w*\b(?!\s*\()/g);
+            var variables = currentLine.replace(/var| var | function | class | return )/, "").match(/\b[A-Za-z]\w*\b(?!\s*\()/g);
+console.log(variables)
 
 
 
@@ -61,30 +62,29 @@ define(function(require, exports, module) {
 //                );
                 
 //                TODO: UNCOMMENT
-
+                
                 nodeDebuggerDomain
                     .exec("writeFile", docArray.join("\n"), document.file._parentPath)
                     .done(function(result){
 
-                    
 
-                    
-console.log(console)
+
+
                          nodeDebuggerDomain
                             .exec("runScript", document.file._parentPath)
                             .done(function(data){
 
-                             
+
 //                             $(".helloworld-panel").find("#insertionPos").innerHTML = '';
 
                              $(".helloworld-panel").find("#insertionPos").html("<p>"+data.stdout+"</p");
-                             
+
                          });
 //                            .done(function(scriptResult){
 //                             
 
 //                            });
-                    
+
                     })
                     .fail(function (err) {
                         console.error("[brackets-simple-node] failed to run nodeDebugger.writeFile", err);
