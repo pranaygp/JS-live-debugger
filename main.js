@@ -50,7 +50,7 @@ define(function(require, exports, module) {
 
 
 
-            if(variables.length > 0){
+            if(variables && variables.length > 0){
 
                 var docArray = text
                     .split("\n");
