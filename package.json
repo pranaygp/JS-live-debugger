@@ -1,0 +1,12 @@
+{
+    "name": "pranaygp.js-live-debugger",
+    "title": "JS Live Debugger",
+    "description": "An extension for brackets that lets you look at the output of individual JS code statements while coding.",
+    "homepage": "https://github.com/pranaygp/JS-live-debugger",
+    "version": "0.1.0",
+    "author": "Pranay Prakash <pranay.gp@gmail.com> (http://pranayprakash.co)",
+    "license": "MIT",
+    "engines": {
+        "brackets": ">=0.24.0"
+    }
+}

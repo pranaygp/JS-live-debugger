@@ -1,6 +1,5 @@
 define(function(require, exports, module) {
 
-
     var CommandManager          = brackets.getModule("command/CommandManager"),
         Menus                   = brackets.getModule("command/Menus"),
         EditorManager           = brackets.getModule("editor/EditorManager"),
@@ -11,26 +10,19 @@ define(function(require, exports, module) {
         NodeDomain              = brackets.getModule("utils/NodeDomain");
 
 
-    var HELLOWORLD_EXECUTE  = "helloworld.execute";
+    var SHOW_PANEL  = "js-live-debugger.showpanel";
     var panel;
     var document;
     var panelHtml           = $(require("text!panel.html"));
 
     var nodeDebuggerDomain = new NodeDomain("nodeDebugger", ExtensionUtils.getModulePath(module, "node/NodeDebuggerDomain"));
-
-
-    function log(s) {
-        console.log("[helloworld5] "+s);
-    }
-
-    function handleHelloWorld() {
+    function handleShowPanel() {
         if(panel.isVisible()) {
             panel.hide();
-
-            CommandManager.get(HELLOWORLD_EXECUTE).setChecked(false);
+            CommandManager.get(SHOW_PANEL).setChecked(false);
         } else {
             panel.show();
-            CommandManager.get(HELLOWORLD_EXECUTE).setChecked(true);
+            CommandManager.get(SHOW_PANEL).setChecked(true);
         }
     }
 
@@ -46,72 +38,34 @@ define(function(require, exports, module) {
             var currentLine = document.getLine(lineNumber);
 
             var variables = currentLine.replace(/(var| var | function | class | return )/, "").match(/\b[A-Za-z]\w*\b(?!\s*\()/g);
-
-
-
-
             if(variables && variables.length > 0){
-
                 var docArray = text
                     .split("\n");
-
                 docArray.splice(lineNumber+1, 0, "console.log(" + variables[0] + ")");
-//
-//                console.log(
-//                    docArray.join("\n")
-//                );
-                
-//                TODO: UNCOMMENT
-                
                 nodeDebuggerDomain
                     .exec("writeFile", docArray.join("\n"), document.file._parentPath)
                     .done(function(result){
-//                        console.log("[brackets-simple-node] writeFile output",result);
-
-                        console.log("Executing runScript");
-
                          nodeDebuggerDomain
                             .exec("runScript", document.file._parentPath)
                             .done(function(data){
-                             console.log(data.stdout);
-
-//                             $(".helloworld-panel").find("#insertionPos").innerHTML = '';
-
-                             $(".helloworld-panel").find("#insertionPos").html("<p>"+data.stdout+"</p");
-
+                             $(".js-live-debugger-panel").find("#insertionPos").html("<p>"+data.stdout+"</p");
                          });
-//                            .done(function(scriptResult){
-//                             
-//                                console.log("[brackets-simple-node] runScript output", scriptResult);
-//                            });
-
                     })
                     .fail(function (err) {
-                        console.error("[brackets-simple-node] failed to run nodeDebugger.writeFile", err);
+                        console.error("[js-live-debugger-node] failed to run nodeDebugger.writeFile", err);
                     });
-
-
-                //                .join("\n");
-
-
             }
-            //            console.log(isVar);
-
-
-            //            $(".helloworld-panel").find("#insertionPos").append("<p>"+insertionPos+"</p");
         }
     }
 
     AppInit.appReady(function () {
-
-        log("Hello from JS Live Debugger.");
-        ExtensionUtils.loadStyleSheet(module, "helloworld.css");
-        CommandManager.register("JS Live Debugger", HELLOWORLD_EXECUTE, handleHelloWorld);
-
+        ExtensionUtils.loadStyleSheet(module, "js-live-debugger.css");
+        CommandManager.register("JS Live Debugger", SHOW_PANEL, handleShowPanel);
+        
         var menu = Menus.getMenu(Menus.AppMenuBar.VIEW_MENU);
-        menu.addMenuItem(HELLOWORLD_EXECUTE, "Shift-Cmd-J");
+        menu.addMenuItem(SHOW_PANEL, "Shift-Cmd-J");
 
-        panel = WorkspaceManager.createBottomPanel(HELLOWORLD_EXECUTE, panelHtml, 200);
+        panel = WorkspaceManager.createBottomPanel(SHOW_PANEL, panelHtml, 200);
 
         setInterval(handleLiveDebugger, 2000);
 

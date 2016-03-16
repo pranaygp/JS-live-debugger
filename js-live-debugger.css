@@ -1,12 +1,12 @@
-.helloworld-panel{
+.js-live-debugger-panel{
     padding: 10px;
 }
 
-.helloworld-panel h1 {
+.js-live-debugger-panel h1 {
         color: white;
 }
  
-.helloworld-panel p {
+.js-live-debugger-panel p {
         color: white;
         font-weight: bold;
 }
