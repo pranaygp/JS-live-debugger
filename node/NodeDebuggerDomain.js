@@ -2,110 +2,79 @@ var os = require('os');
 var fs = require('fs');
 var execSync = require('sync-exec');
 
+var SCRIPT_FILE = ".js-live-code.js";
+
 function cmdSaveToFile(content, path){
-    fs.writeFile(path + "js-live-code.js", content, function(err) {
+    fs.writeFile(path + SCRIPT_FILE, content, function(err) {
         if(err) {
-            //                return console.log(os.tmpdir());
             return console.log(err);
         }
     }); 
 }
 
-
 function cmdRunScript(path) {
     
-//    return "done";
+    var scriptPath = path.replace(/ /,"\\ ") + SCRIPT_FILE;
     
-    var scriptPath = "js-live-code.js";
-    // keep track of whether callback has been invoked to prevent multiple invocations
-    var invoked = false;
-    
-    var returndata;
-
-//    console.log(("node " + path + scriptPath));
-    
-//    var process = childProcess.fork("node " + path.replace(/ /,"\\ ") + scriptPath);
-//    
-//    process.stdout.on("data", function(data){
-//        
-//        console.log("stdout: ",data);
-//        return 0;
-//        
-//    });
-    
-//    /usr/local/bin/node
-    
-    var process = execSync("/usr/local/bin/node " + path.replace(/ /,"\\ ") + scriptPath);
-    
-    console.log(process);
-    
+    var process = execSync("/usr/local/bin/node " + scriptPath);
     return process;
-    
-//    var process = childProcess.exec("which node", function(error, stdout, stderr){
-        
-//        if (error !== null) {
-//            console.log("exec error: ",error);
-//        }
-//        
-//        console.log("stdout: ",stdout);
-//        console.log("stderr: ",stderr);
-//        
-//        returndata = stdout;
-        
-//        console.log("test ",test);
-//        
-//        if(callback)
-//            callback(stdout);
-        
-//        console.log(`stderr: ${stderr}`);
-        
-//    });
-    
-//    setTimeout(function(){
-//        returndata = "Time Out";
-//    }, 3000);
-    
-//    while(returndata == undefined){};
-    return invoked;
-
 }
 
-// Now we can run a script and invoke a callback when complete, e.g.
-//runScript(function (err) {
-//    if (err) throw err;
-//    console.log('finished running some-script.js');
-//});
+function cmdDeleteFile(path){
+    fs.unlink(path + SCRIPT_FILE, content, function(err) {
+        if(err) {
+            return console.log(err);
+        }
+    }); 
+}
 
 function init(domainManager) {
     if (!domainManager.hasDomain("nodeDebugger")) {
         domainManager.registerDomain("nodeDebugger", {major: 0, minor: 1});
     }
     domainManager.registerCommand(
-        "nodeDebugger",       // domain name
-        "writeFile",    // command name
-        cmdSaveToFile,   // command handler function
-        false,          // this command is synchronous in Node
-        "Returns the total or free memory on the user's system in bytes",
-        [{name: "total", // parameters
+        "nodeDebugger",                 // domain name
+        "writeFile",                    // command name
+        cmdSaveToFile,                  // command handler function
+        false,                          // this command is synchronous in Node
+        "Saves a local copy of whatever is passed in as " + SCRIPT_FILE,
+        [{name: "content",              // parameters
           type: "string",
-          description: "True to return total memory, false to return free memory"}],
-        [{name: "memory", // return values
-          type: "number",
-          description: "amount of memory in bytes"}]
+          description: "Content of JS file"},
+        {name: "path",                  // parameters
+          type: "string",
+          description: "Path to store JS file"}],
+        [{name: "err",                  // return values
+          type: "string",
+          description: "Error while saving file (if any)"}]
     );
 
     domainManager.registerCommand(
-        "nodeDebugger",       // domain name
-        "runScript",    // command name
-        cmdRunScript,   // command handler function
-        false,          // this command is synchronous in Node
-        "Returns the total or free memory on the user's system in bytes",
-        [{name: "total", // parameters
+        "nodeDebugger",                 // domain name
+        "runScript",                    // command name
+        cmdRunScript,                   // command handler function
+        false,                          // this command is synchronous in Node
+        "Rune the " + SCRIPT_FILE + " at given path.",
+        [{name: "path",                 // parameters
           type: "string",
-          description: "True to return total memory, false to return free memory"}],
-        [{name: "memory", // return values
-          type: "number",
-          description: "amount of memory in bytes"}]
+          description: "Path to read JS file from"}],
+        [{name: "result",               // return values
+          type: "object",
+          description: "stdout: Console output of file\nstderr: Console error output of file"}]
+    );
+    
+    domainManager.registerCommand(
+        "nodeDebugger",                 // domain name
+        "deleteFile",                   // command name
+        cmdDeleteFile,                  // command handler function
+        false,                          // this command is synchronous in Node
+        "Deletes " + SCRIPT_FILE +" from passed in path",
+        [{name: "path",                 // parameters
+          type: "string",
+          description: "Path to delete JS file from"}],
+        [{name: "err",                  // return values
+          type: "string",
+          description: "Error while deleting file (if any)"}]
     );
 }
 
